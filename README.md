@@ -5,7 +5,7 @@
 
 ## Development Progress
 
-All development can be tracked on our public Trello board [here](https://trello.com/b/sDJQagZ3/future-rockstars-python-project).
+All development can be tracked on our public Trello board [here](https://trello.com/b/sDJQagZ3/future-rockstars-python-project) and further information on our development progress and process can be found on this repository's wiki [here](https://github.com/thehouseplant/future-rockstars/wiki). 
 
 ## Installation
 
