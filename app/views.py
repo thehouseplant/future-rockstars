@@ -129,7 +129,7 @@ def add_member():
 
 @app.route('/members/submit', methods=['POST'])
 def submit_member():
-    cohort = request.form.getlist('cohort')[0]
+    '''cohort = request.form.getlist('cohort')[0]
     today = datetime.date.today()
     margin = datetime.timedelta(days = 30)
     if cohort == 'first':
@@ -142,8 +142,9 @@ def submit_member():
     if datecheck == True:
         dao.insert_member(request.form)
     elif datecheck == False:
-        print('Application cannot be submitted due to date restrictions')
-
+        print('Application cannot be submitted due to date restrictions')'''
+    
+    dao.insert_member(request.form)
     return redirect('/members')
 
 
