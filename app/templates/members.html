@@ -5,137 +5,97 @@
     
     <hr>
 
-    <div style="margin:15px 0px;">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMemberModal">
-            Add Member
-        </button>
+    <div class="row">
+        <div class="col-md-9">
+            <p>
+                <a class="btn btn-primary" href="/members/add">
+                    Add Member
+                </a>
+            </p>
+        </div>
+        <div class="col-md-3">
+            <p style="text-align: right;">
+                <!--Viewing Cohort: 
+                <select style="margin-left:10px;">
+                    <option value="1">June</option>
+                    <option value="2">July</option>
+                    <option value="3">August</option>
+                </select>-->
+            </p>
+        </div>
     </div>
-    <table class="table table-striped">
-        <thead class="thead-inverse">
-            <tr>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Age</th>
-                <th>Talent</th>
-                <th>Status</th>
-                <th>Forms</th>
-                <th>Payment</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% set sort_on = request.args.sort_on|default('firstName') %}
-            {% set active_member = request.args.active_member %}
-            {% for member in members|sort(attribute=sort_on) %}
-                <tr>
-                    <td>{{ member.firstName }} {{ member.lastName }}</td>
-                    <td>{{ member.gender }}</td>
-                    <td>{{ member.age }}</td>
-                    <td>{{ member.talent }}</td>
-                    <td>{{ member.status }}</td>
-                    {% if member.forms == false %}
-                    <td>No</td>
-                    {% else %}
-                    <td>Yes</td>
-                    {% endif %}
-                    {% if member.payment == false %}
-                    <td>No</td>
-                    {% else %}
-                    <td>Yes</td>
-                    {% endif %}
-                    {% if member.checkin == false %}
-                    <td>
-                        <form action="{{ url_for('checkInMember') }}" method="post">
-                            <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                            <input type="submit" class="btn btn-success btn-sm" value="Check In" />
-                        </form>
-                    </td>
-                    {% else %}
-                    <td>
-                        <form action="{{ url_for('checkOutMember') }}" method="post">
-                            <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                            <input type="submit" class="btn btn-danger btn-sm" value="Check Out" />
-                        </form>
-                    </td>
-                    {% endif %}
-                    <td>
-                        <form action="{{ url_for('editMember') }}" method="post">
-                            <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                            <input type="submit" class="btn btn-secondary btn-sm" value="Edit" />
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addMemberModalLabel">Add New Member</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ url_for('addMember') }}" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="inputFistName">First Name</label>
-                            <input type="text" class="form-control" name="firstName" id="inputFirstName" placeholder="Enter first name">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputLastName">Last Name</label>
-                            <input type="text" class="form-control" name="lastName" id="inputLastName" placeholder="Enter last name">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputGender">Gender</label>
-                            <select class="form-control" name="gender" id="inputGender">
-                                <option value="">Choose gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputAge">Age</label>
-                            <input type="number" class="form-control" name="age" id="inputAge" placeholder="Enter age">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputStreet">Street</label>
-                            <input type="text" class="form-control" name="street" id="inputStreet" placeholder="Enter street">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCity">City</label>
-                            <input type="text" class="form-control" name="city" id="inputCity" placeholder="Enter city">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputState">State</label>
-                            <input type="text" class="form-control" name="state" id="inputState" placeholder="Enter state">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputZipCode">ZIP Code</label>
-                            <input type="number" class="form-control" name="zipCode" id="inputZipCode" placeholder="Enter ZIP code">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputTalent">Talent</label>
-                            <select class="form-control" name="talent" id="inputTalent">
-                                <option value="">Choose talent</option>
-                                <option value="Singer">Singer</option>
-                                <option value="Guitarist">Guitarist</option>
-                                <option value="Drummer">Drummer</option>
-                                <option value="Bassist">Bassist</option>
-                                <option value="Keyboardist">Keyboardist</option>
-                                <option value="Instrumentalist">Instrumentalist</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" value="Add Member" />
-                    </div>
-                </form>
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Talent</th>
+                        <th>Status</th>
+                        <th>Cohort</th>
+                        <th>Forms</th>
+                        <th>Payment</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set sort_on = request.args.sort_on|default('firstName') %}
+                    {% set active_member = request.args.active_member %}
+                    {% for member in members|sort(attribute=sort_on) %}
+                        <tr>
+                            <td>{{ member.firstName }} {{ member.lastName }}</td>
+                            <td>{{ member.gender }}</td>
+                            <td>{{ member.age }}</td>
+                            <td>{{ member.talent }}</td>
+                            <td>{{ member.status }}</td>
+                            {% if member.cohort == 'first' %}
+                                <td>June</td>
+                            {% elif member.cohort == 'second' %}
+                                <td>July</td>
+                            {% else %}
+                                <td>August</td>
+                            {% endif %}
+                            {% if member.forms == false %}
+                                <td>No</td>
+                            {% else %}
+                                <td>Yes</td>
+                            {% endif %}
+                            {% if member.payment == false %}
+                                <td>No</td>
+                            {% else %}
+                                <td>Yes</td>
+                            {% endif %}
+                            {% if member.checkin == false %}
+                                <td>
+                                    <form action="{{ url_for('checkin_member') }}" method="POST">
+                                        <input type="hidden" name="queryType" value="checkin" />
+                                        <input type="hidden" name="memberId" value="{{member.memberId}}" />
+                                        <input type="submit" class="btn btn-success btn-sm" value="Check In" />
+                                    </form>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <form action="{{ url_for('checkout_member') }}" method="POST">
+                                        <input type="hidden" name="queryType" value="checkout" />
+                                        <input type="hidden" name="memberId" value="{{member.memberId}}" />
+                                        <input type="submit" class="btn btn-danger btn-sm" value="Check Out" />
+                                    </form>
+                                </td>
+                            {% endif %}
+                            <td>
+                                <form action="{{ url_for('edit_member') }}" method="POST">
+                                    <input type="hidden" name="memberId" value="{{member.memberId}}" />
+                                    <input type="submit" class="btn btn-secondary btn-sm" value="Edit" />
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
