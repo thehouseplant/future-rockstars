@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% set active_page = "edit_member" %}
+{% block content %}
+    <h2>Add Member</h2>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{{ url_for('submit_member') }}" method="POST">
+                <div class="form-group">
+                    <label for="inputFistName">First Name</label>
+                    <input type="text" class="form-control" name="firstName" id="inputFirstName" placeholder="Enter first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" id="inputLastName" placeholder="Enter last name" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputGender">Gender</label>
+                    <select class="form-control" name="gender" id="inputGender" required>
+                        <option value="">Choose gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputAge">Age</label>
+                    <select class="form-control" name="age" id="inputAge" required>
+                        <option value="">Choose age</option>
+                        {% for n in range(13,19) %}
+                            <option value="{{n}}">{{n}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputStreet">Street</label>
+                    <input type="text" class="form-control" name="street" id="inputStreet" placeholder="Enter street" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputCity">City</label>
+                    <input type="text" class="form-control" name="city" id="inputCity" placeholder="Enter city" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputState">State</label>
+                    <select class="form-control" name="state" id="inputState" required>
+                        <option value="">Choose state</option>
+                        {% for state in states %}
+                            <option value="{{state}}">{{state}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputZipCode">ZIP Code</label>
+                    <input type="number" class="form-control" name="zipCode" id="inputZipCode" pattern="^\d{5}(?:[-\s]\d{4})?$" placeholder="Enter ZIP code" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputPhone">Phone Number (xxx-xxx-xxxx)</label>
+                    <input type="tel" class="form-control" name="phone" id="inputPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="xxx-xxx-xxxx" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputTalent">Talent</label>
+                    <select class="form-control" name="talent" id="inputTalent" required>
+                        <option value="">Choose talent</option>
+                        <option value="Singer">Singer</option>
+                        <option value="Guitarist">Guitarist</option>
+                        <option value="Drummer">Drummer</option>
+                        <option value="Bassist">Bassist</option>
+                        <option value="Keyboardist">Keyboardist</option>
+                        <option value="Instrumentalist">Instrumentalist</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputCohort">Cohort</label>
+                    <select class="form-control" name="cohort" id="inputCohort" required>
+                        <option value="">Choose cohort</option>
+                        <option value="first">June</option>
+                        <option value="second">July</option>
+                        <option value="third">August</option>
+                    </select>
+                </div>
+
+                <br>
+                
+                <a href="/members" class="btn btn-secondary">Cancel</a>
+                <input type="submit" class="btn btn-primary" value="Add Member" />
+            </form>
+        </div>
+    </div>
+{% endblock %}
