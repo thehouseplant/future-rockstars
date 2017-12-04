@@ -5,54 +5,27 @@
 
     <hr>
 
-    <h4>Deny Application</h4>
+    <h4>Generate Letters</h4>
     <div class="row">
         <div class="col-md-4">
-            <form action="{{ url_for('sendEmail') }}" method="post">
+            <form action="{{ url_for('send_email') }}" method="POST">
                 <input type="hidden" name="memberId" value="{{member.memberId}}" />
                 <input type="hidden" name="type" value="accepted" />
-                <input type="submit" class="btn btn-secondary btn-block" value="Based on Song Choice" />
+                <input type="submit" class="btn btn-success btn-block" value="Acceptance Letter" />
             </form>
         </div>
         <div class="col-md-4">
-            <form action="{{ url_for('sendEmail') }}" method="post">
+            <form action="{{ url_for('send_email') }}" method="POST">
                 <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                <input type="hidden" name="type" value="tryagain" />
-                <input type="submit" class="btn btn-secondary btn-block" value="Because of Lack of a Good Reason" />
+                <input type="hidden" name="type" value="waitlist" />
+                <input type="submit" class="btn btn-secondary btn-block" value="Waitlist Letter" />
             </form>
         </div>
         <div class="col-md-4">
-            <form action="{{ url_for('sendEmail') }}" method="post">
-                <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                <input type="hidden" name="type" value="rejected" />
-                <input type="submit" class="btn btn-secondary btn-block" value="Because of Failed Payment" />
-            </form>
-        </div>
-    </div>
-
-    <br>
-
-    <h4>Email Forms</h4>
-    <div class="row">
-        <div class="col-md-4">
-            <form action="{{ url_for('sendEmail') }}" method="post">
-                <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                <input type="hidden" name="type" value="accepted" />
-                <input type="submit" class="btn btn-success btn-block" value="Generate Acceptance Letter" />
-            </form>
-        </div>
-        <div class="col-md-4">
-            <form action="{{ url_for('sendEmail') }}" method="post">
-                <input type="hidden" name="memberId" value="{{member.memberId}}" />
-                <input type="hidden" name="type" value="tryagain" />
-                <input type="submit" class="btn btn-secondary btn-block" value="Generate Try Again Letter" />
-            </form>
-        </div>
-        <div class="col-md-4">
-            <form action="{{ url_for('sendEmail') }}" method="post">
+            <form action="{{ url_for('send_email') }}" method="POST">
                 <input type="hidden" name="memberId" value="{{member.memberId}}" />
                 <input type="hidden" name="type" value="rejected" />
-                <input type="submit" class="btn btn-danger btn-block" value="Generate Rejection Letter" />
+                <input type="submit" class="btn btn-danger btn-block" value="Rejection Letter" />
             </form>
         </div>
     </div>
@@ -61,47 +34,89 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ url_for('updateMember') }}" method="post">
+            <form action="{{ url_for('update_member') }}" method="POST">
                 <input type="hidden" name="memberId" value="{{member.memberId}}" />
                 <div class="form-group">
                     <label for="inputGender">Gender</label>
-                    <input type="text" class="form-control" name="gender" id="inputGender" value="{{member.gender}}">
+                    <select class="form-control" name="gender" id="inputGender" required>
+                        <option value="male" {% if member.gender=='male' %} selected="selected" {% endif %}>Male</option>
+                        <option value="female" {% if member.gender=='female' %} selected="selected" {% endif %}>Female</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputAge">Age</label>
-                    <input type="number" class="form-control" name="age" id="inputAge" value="{{member.age}}">
+                    <select class="form-control" name="age" id="inputAge" required>
+                    {% for n in range(13,19) %}
+                        <option value="{{n}}" {% if member.age==n %} selected="selected" {% endif %}>{{n}}</option>
+                    {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputStreet">Street</label>
-                    <input type="text" class="form-control" name="street" id="inputStreet" value="{{member.street}}">
+                    <input type="text" class="form-control" name="street" id="inputStreet" value="{{member.street}}" required>
                 </div>
                 <div class="form-group">
                     <label for="inputCity">City</label>
-                    <input type="text" class="form-control" name="city" id="inputCity" value="{{member.city}}">
+                    <input type="text" class="form-control" name="city" id="inputCity" value="{{member.city}}" required>
                 </div>
                 <div class="form-group">
                     <label for="inputState">State</label>
-                    <input type="text" class="form-control" name="state" id="inputState" value="{{member.state}}">
+                    <select class="form-control" name="state" id="inputState" required>
+                        {% for state in states %}
+                            <option value="{{state}}" {% if member.state==state %} selected="selected" {% endif %}>{{state}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputZipCode">ZIP Code</label>
-                    <input type="number" class="form-control" name="zipCode" id="inputZipCode" value="{{member.zipCode}}">
+                    <input type="number" class="form-control" name="zipCode" id="inputZipCode" value="{{member.zipCode}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputPhone">Phone Number (xxx-xxx-xxxx)</label>
+                    <input type="tel" class="form-control" name="phone" id="inputPhone" value="{{member.phone}}" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
                 </div>
                 <div class="form-group">
                     <label for="inputTalent">Talent</label>
-                    <input type="text" class="form-control" name="talent" id="inputTalent" value="{{member.talent}}">
+                    <select class="form-control" name="talent" id="inputTalent" required>
+                        <option value="Singer" {% if member.talent=='Singer' %} selected="selected" {% endif %}>Singer</option>
+                        <option value="Guitarist" {% if member.talent=='Guitarist' %} selected="selected" {% endif %}>Guitarist</option>
+                        <option value="Drummer" {% if member.talent=='Drummer' %} selected="selcted" {% endif %}>Drummer</option>
+                        <option value="Bassist" {% if member.talent=='Bassist' %} selected="selected" {% endif %}>Bassist</option>
+                        <option value="Keyboardist" {% if member.talent=='Keyboardist' %} selected="selected" {% endif %}>Keyboardist</option>
+                        <option value="Instrumentalist" {% if member.talent=='Instrumentalist' %} selected="selected" {% endif %}>Instrumentalist</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputCohort">Cohort</label>
+                    <select class="form-control" name="cohort" id="inputCohort" required>
+                        <option value="first" {% if member.cohort=='first' %} selected="selected" {% endif %}>June</option>
+                        <option value="second" {% if member.cohort=='second' %} selected="selected" {% endif %}>July</option>
+                        <option value="third" {% if member.cohort=='third' %} selected="selected" {% endif %}>August</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputStatus">Status</label>
-                    <input type="text" class="form-control" name="status" id="inputStatus" value="{{member.status}}">
+                    <select class="form-control" name="status" id="inputStatus" required>
+                        <option value="Submitted" {% if member.status=='Submitted' %} selected="selected" {% endif %}>Submitted</option>
+                        <option value="Pending" {% if member.status=='Pending' %} selected="selected" {% endif %}>Pending</option>
+                        <option value="Accepted" {% if member.status=='Accepted' %} selected="selected" {% endif %}>Accepted</option>
+                        <option value="Rejected" {% if member.status=='Rejected' %} selected="selected" {% endif %}>Rejected</option>
+                        <option value="Waitlisted" {% if member.status=='Waitlisted' %} selected="selected" {% endif %}>Waitlisted</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputForms">Forms</label>
-                    <input type="text" class="form-control" name="status" id="inputForms" value="{{member.forms}}">
+                    <select class="form-control" name="forms" id="inputForms" required>
+                        <option value="False" {% if member.forms==false %} selected="selected" {% endif %}>No</option>
+                        <option value="True" {% if member.form==true %} selected="selected" {% endif %}>Yes</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputPayment">Payment</label>
-                    <input type="text" class="form-control" name="status" id="inputPayment" value="{{member.payment}}">
+                    <select class="form-control" name="payment" id="inputPayment" required>
+                        <option value="False" {% if member.payment==false %} selected="selected" {% endif %}>No</option>
+                        <option value="True" {% if member.payment==true %} selected="selected" {% endif %}>Yes</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputComments">Comments</label>
