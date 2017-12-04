@@ -1,5 +1,7 @@
 
 # Future Rockstars
+[![Build Status](https://travis-ci.org/thehouseplant/future-rockstars.svg?branch=master)](https://travis-ci.org/thehouseplant/future-rockstars)
+[![Coverage Status](https://coveralls.io/repos/github/thehouseplant/future-rockstars/badge.svg?branch=master)](https://coveralls.io/github/thehouseplant/future-rockstars?branch=master)
 
 ## Development Progress
 
