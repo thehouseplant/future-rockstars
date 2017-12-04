@@ -5,25 +5,34 @@
 
     <hr>
 
-    <p>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignDormsModal">Assign Dorms</button>
-    </p>
-    {% for dorm in dorms %}
-    <div class="card">
-        <div class="card-header">
-            {{ dorm.gender }} {{ dorm.name }}
-        </div>
-        <div class="card-body">
-            <h4 class="card-title">Members</h4>
-            <ul>
-                {% for member in dorm.members %}
-                    <li>{{member}}</li>
-                {% endfor %}
-            </li>
+    <div class="row">
+        <div class="col-md-12">
+            <p> 
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignDormsModal">Assign Dorms</button>
+            </p>
         </div>
     </div>
-    <br>
-    {% endfor %}
+    
+    <div class="row">
+        <div class="col-md-12">
+            {% for dorm in dorms %}
+            <div class="card">
+                <div class="card-header">
+                    {{ dorm.gender }} {{ dorm.name }}
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Members</h4>
+                    <ul>
+                        {% for member in dorm.members %}
+                            <li>{{member}}</li>
+                        {% endfor %}
+                    </li>
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+    </div>
 
     <div class="modal fade" id="assignDormsModal" tabindex="-1" role="dialog" aria-labelledby="assignDormsModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
