@@ -20,11 +20,11 @@
 
     {% if type == 'accepted' %}
     <p>
-        Congratulations! You have qualified and been selected to be part of this summer’s Future Rockstars Band Camp. We look forward to personally welcoming you at the orientation scheduled on June 12, 2018 from 8:00 AM to 10:00 AM. You and your guardian will be receiving all the help and information you need to ensure a smooth, comfortable transition into band camp life.         
+        Congratulations! You have qualified and been selected to be part of this summer’s Future Rockstars Band Camp. We look forward to personally welcoming you at camp orientation. You and your guardian will be receiving all the help and information you need to ensure a smooth, comfortable transition into band camp life. 
     </p>
-    {% elif type == 'tryagain' %}
+    {% elif type == 'waitlist' %}
     <p>
-        We wanted to inform you that, while your submission was good, unfortunately it was not quite enough to make the cut. Please understand that the competition is stiff and you should be proud to have made it this far. Please take the time to consider re-applying next year.
+        We wanted to inform you that, while your submission was good, unfortunately it was not quite enough to make the cut. We have gone ahead and added you to our limited waitlist so that you still have a chance to get into the camp. Please get your paperwork and forms in order so that you will be ready if we call upon you. 
     </p>
     {% elif type == 'rejected' %}
     <p>
@@ -51,9 +51,9 @@
     <p>
         Once again, Congratulations! We look forward to meeting you. 
     </p>
-    {% elif type == 'tryagain' %}
+    {% elif type == 'waitlist' %}
     <p>
-        Once again, please take the time to reach out and try again next year. 
+        Once again, please keep on the lookout for any further communication from us.
     </p>
     {% elif type == 'rejected' %}
     <p>
