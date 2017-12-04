@@ -129,7 +129,7 @@ def add_member():
 
 @app.route('/members/submit', methods=['POST'])
 def submit_member():
-    cohort = form_body.getlist('cohort')[0]
+    cohort = request.form.getlist('cohort')[0]
     today = datetime.date.today()
     margin = datetime.timedelta(days = 30)
     if cohort == 'first':
