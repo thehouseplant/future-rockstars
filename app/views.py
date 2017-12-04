@@ -1,22 +1,22 @@
-from app import app
-from flask import render_template, redirect, request
-from random import *
-from tinydb import TinyDB, Query
+import datetime
+from app import app, dao
+from flask import redirect, render_template, request
+from flask_wtf import FlaskForm
+from wtforms import IntegerField, SelectField, StringField, SubmitField, validators
 
-db = TinyDB('../db.json')
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
-def indexView():
+def index_view():
     return render_template('index.html', title='Home')
 
+
 @app.route('/bands', methods=['GET'])
-def bandsView():
-    Entry = Query()
-    rawBands = db.search(Entry.type == 'band')
+def bands_view():
+    raw_bands = dao.query_by_type('band')
     bands = []
     
-    for b in rawBands:
+    for b in raw_bands:
         band = dict(b)
         band['name'] = band['name'].split()
         band['name'] = 'Band ' + str(int(band['name'][1]) + 1)
@@ -36,13 +36,13 @@ def bandsView():
 
     return render_template('bands.html', title='Bands', bands=bands)
 
+
 @app.route('/dorms', methods=['GET'])
-def dormsView():
-    Entry = Query()
-    rawDorms = db.search(Entry.type == 'dorm')
+def dorms_view():
+    raw_dorms = dao.query_by_type('dorm')
     dorms = []
 
-    for d in rawDorms:
+    for d in raw_dorms:
         dorm = dict(d)
         dorm['name'] = dorm['name'].split()
         dorm['name'] = 'Dorm ' + str(int(dorm['name'][1]) + 1)
@@ -58,73 +58,138 @@ def dormsView():
     
     return render_template('dorms.html', title='Dorms', dorms=dorms)
 
-@app.route('/members', methods=['GET'])
-def membersView():
-    Entry = Query()
-    members = db.search(Entry.type == 'member')
-    return render_template('members.html', title='Members', members=members)
 
-@app.route('/members/add', methods=['POST'])
-def addMember():
-    member_id = randint(50, 500)
-    member_firstName = request.form.getlist('firstName')[0]
-    member_lastName = request.form.getlist('lastName')[0]
-    member_gender = request.form.getlist('gender')[0]
-    member_age = request.form.getlist('age')[0]
-    member_street = request.form.getlist('street')[0]
-    member_city = request.form.getlist('city')[0]
-    member_state = request.form.getlist('state')[0]
-    member_zipCode = request.form.getlist('zipCode')[0]
-    member_talent = request.form.getlist('talent')[0]
-    db.insert({
-        'memberId': member_id,
-        'type': 'member', 
-        'firstName': member_firstName,
-        'lastName': member_lastName, 
-        'gender': member_gender, 
-        'age': member_age, 
-        'street': member_street, 
-        'city': member_city,
-        'state': member_state,
-        'zipCode': member_zipCode,
-        'talent': member_talent,
-        'status': 'Pending',
-        'checkin': False,
-        'forms': False,
-        'payment': False
-    })
+class NewMemberForm(FlaskForm):
+    first_name = StringField('First name', [validators.InputRequired()])
+    last_name = StringField('Last name', [validators.InputRequired()])
+    gender = SelectField('Gender', [validators.InputRequired],
+                         choices=[
+                             ('male', 'Male'),
+                             ('female', 'Female')
+                         ])
+    age = IntegerField('Age', [validators.Length(min=13, max=18), validators.InputRequired()])
+    street = StringField('Street', [validators.InputRequired()])
+    city = StringField('City', [validators.InputRequired()])
+    state = StringField('State', [validators.InputRequired()])
+    zip_code = IntegerField('ZIP Code', [validators.Length(min=00000, max=99999), validators.InputRequired()])
+    talent = SelectField('Talent', [validators.InputRequired()],
+                         choices=[
+                             ('singer', 'Singer'),
+                             ('guitarist', 'Guitarist'),
+                             ('drummer', 'Drummer'),
+                             ('bassist', 'Bassist'),
+                             ('keyboardist', 'Keyboardist'),
+                             ('instrumentalist', 'Instrumentalist')
+                         ])
+    submit = SubmitField('Submit')
+
+
+@app.route('/members', methods=['GET', 'POST'])
+def members():
+    members_list = dao.query_by_type('member')
+
+    form = NewMemberForm()
+    if form.validate_on_submit():
+        # Parse incoming form data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        gender = form.gender.data
+        age = form.age.data
+        street = form.street.data
+        city = form.city.data
+        state = form.state.data
+        zip_code = form.zip_code.data
+        talent = form.talent.data
+
+        # Clear form for new submission
+        form.first_name.data = ''
+        form.last_name.data = ''
+        form.gender.data = ''
+        form.age.data = ''
+        form.street.data = ''
+        form.city.data = ''
+        form.state.data = ''
+        form.zip_code.data = ''
+        form.talent.data = ''
+
+    return render_template('members.html', title='Members', members=members_list, form=form)
+
+
+@app.route('/members/add', methods=['GET'])
+def add_member():
+    states = [
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", 
+        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" 
+    ]
+    return render_template('add-member.html', title='Add Member', states=states)
+
+
+@app.route('/members/submit', methods=['POST'])
+def submit_member():
+    cohort = form_body.getlist('cohort')[0]
+    today = datetime.date.today()
+    margin = datetime.timedelta(days = 30)
+    if cohort == 'first':
+        datecheck = today - margin <= datetime.date(2017, 6, 20) <= today + margin
+    elif cohort == 'second':
+        datecheck = today - margin <= datetime.date(2017, 7, 20) <= today + margin
+    elif cohort == 'third':
+        datecheck = today - margin <= datetime.date(2017, 8, 20) <= today + margin
+
+    if datecheck == True:
+        dao.insert_member(request.form)
+    elif datecheck == False:
+        print('Application cannot be submitted due to date restrictions')
+
     return redirect('/members')
+
 
 @app.route('/members/delete', methods=['POST'])
-def deleteMember():
+def delete_member():
     member_id = request.form.getlist('memberId')[0]
-    Member = Query()
-    db.remove(Member.memberId == member_id)
+    dao.remove_member_by_id(member_id)
+
     return redirect('/members')
+
 
 @app.route('/members/checkout', methods=['POST'])
-def checkOutMember():
+def checkout_member():
     member_id = request.form.getlist('memberId')[0]
-    Member = Query()
-    db.update({'checkin': False}, Member.memberId == member_id)
+    query = dict({"checkin": False})
+    dao.update_member_by_id(query, member_id)
+
     return redirect('/members')
+
 
 @app.route('/members/checkin', methods=['POST'])
-def checkInMember():
+def checkin_member():
     member_id = request.form.getlist('memberId')[0]
-    Member = Query()
-    db.update({'checkin': True}, Member.memberId == member_id)
+    query = dict({"checkin": True})
+    dao.update_member_by_id(query, member_id)
+
     return redirect('/members')
 
+
 @app.route('/members/edit', methods=['POST'])
-def editMember():
+def edit_member():
     member_id = request.form.getlist('memberId')[0]
-    Member = Query()
-    member = db.search(Member.memberId == member_id)
-    return render_template('edit-member.html', title='Edit Member', member=member[0])
+    member = dao.query_member_by_id(member_id)
+    states = [
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", 
+        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" 
+    ]
+
+    return render_template('edit-member.html', title='Edit Member', member=member[0], states=states)
+
 
 @app.route('/members/update', methods=['POST'])
-def updateMember():
+def update_member():
     member_id = request.form.getlist('memberId')[0]
     member_gender = request.form.getlist('gender')[0]
     member_age = request.form.getlist('age')[0]
@@ -138,8 +203,7 @@ def updateMember():
     #member_forms = request.form.getlist('forms')[0]
     #member_payment = request.form.getlist('payment')[0]
     member_comments = request.form.getlist('comments')[0]
-    Member = Query()
-    db.update({
+    form_body = ({
         'gender': member_gender, 
         'age': member_age, 
         'street': member_street, 
@@ -152,22 +216,27 @@ def updateMember():
         #'forms': member_forms,
         #'payment': member_payment,
         'comments': member_comments
-    }, Member.memberId == member_id)
+    })
+    dao.update_member_by_id(form_body, member_id)
+
     return redirect('/members')
 
+
 @app.route('/email/send', methods=['POST'])
-def sendEmail():
+def send_email():
     member_id = request.form.getlist('memberId')[0]
     email_type = request.form.getlist('type')[0]
-    Member = Query()
-    member = db.search(Member.memberId == member_id)
+    member = dao.query_member_by_id(member_id)
+
     return render_template('email.html', title="Email Template", type=email_type, member=member[0])
+
 
 # Custom error handling
 @app.errorhandler(404)
-def notFoundError(error):
+def not_found_error(error):
     return render_template('404.html'), 404
 
+
 @app.errorhandler(500)
-def internalError(error):
+def internal_error(error):
     return render_template('500.html'), 500
