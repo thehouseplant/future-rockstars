@@ -6,6 +6,7 @@ install:
   - pip install coveralls
 script:
   - python tests.py
+  - python manage.py coverage
 branches:
   only:
     - master
