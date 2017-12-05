@@ -1,1 +1,92 @@
-[{"name": "boy-dorm 0", "type": "dorm", "gender": "male", "members": ["77 || 14 || Kenneth Houston", "91 || 17 || John Crosby", "74 || 13 || Fredrick Beaird", "78 || 18 || Michael Reedy", "76 || 17 || Christopher Riley", "75 || 17 || Daniel Devine", "90 || 15 || James Wilson", "79 || 16 || Brendan Dixon"]}, {"name": "boy-dorm 1", "type": "dorm", "gender": "male", "members": ["88 || 14 || Terry Davis", "86 || 17 || John Davis", "94 || 14 || Ben Thomas", "84 || 17 || Philip Gibbons", "87 || 17 || Timothy Lathan", "80 || 16 || Rodney Powers", "93 || 15 || Michael Benefield", "95 || 15 || Lawrence Griffin"]}, {"name": "boy-dorm 2", "type": "dorm", "gender": "male", "members": ["82 || 14 || Thomas Martinez", "92 || 17 || Charles Glass", "81 || 14 || Patrick Fernandez", "96 || 17 || Henry Denis", "85 || 17 || Eric Wilkins", "89 || 15 || Patrick Kelly", "73 || 15 || Anthony Gray", "83 || 16 || Gary Worthington"]}, {"name": "girl-dorm 0", "type": "dorm", "gender": "female", "members": ["11 || 13 || Estella Robinson", "21 || 17 || Gracie Thompson", "8 || 14 || Kathy Boer", "15 || 17 || Hayley Trimble", "14 || 17 || Elsie Conner", "2 || 16 || Melinda Motto", "3 || 18 || Kristen Rasch", "4 || 14 || Leigh Weston"]}, {"name": "girl-dorm 1", "type": "dorm", "gender": "female", "members": ["10 || 13 || Sara Meier", "1 || 18 || Amanda Sullivan", "20 || 14 || Joetta Linville", "22 || 18 || Katie Evans", "24 || 16 || Jamie Barnes", "17 || 16 || Loretta Marr", "5 || 13 || Shirley Keller", "6 || 13 || Francine Kendrick"]}, {"name": "girl-dorm 2", "type": "dorm", "gender": "female", "members": ["16 || 14 || Stephanie Romero", "12 || 18 || Dianne Ung", "7 || 13 || Sharon Gonzales", "13 || 17 || Kayla Grimes", "9 || 15 || Angela Palmer", "19 || 15 || Courtney Boyd", "23 || 15 || Ashley Lindley", "18 || 15 || Elizabeth Sanchez"]}]
+[
+    {
+        "name": "boy-dorm 0",
+        "type": "dorm",
+        "gender": "male",
+        "members": [
+            "77 || 14 || Kenneth Houston",
+            "91 || 17 || John Crosby",
+            "74 || 13 || Fredrick Beaird",
+            "78 || 18 || Michael Reedy",
+            "76 || 17 || Christopher Riley",
+            "75 || 17 || Daniel Devine",
+            "90 || 15 || James Wilson",
+            "79 || 16 || Brendan Dixon"
+        ]
+    },
+    {
+        "name": "boy-dorm 1",
+        "type": "dorm",
+        "gender": "male",
+        "members": [
+            "88 || 14 || Terry Davis",
+            "86 || 17 || John Davis",
+            "94 || 14 || Ben Thomas",
+            "84 || 17 || Philip Gibbons",
+            "87 || 17 || Timothy Lathan",
+            "80 || 16 || Rodney Powers",
+            "93 || 15 || Michael Benefield",
+            "95 || 15 || Lawrence Griffin"
+        ]
+    },
+    {
+        "name": "boy-dorm 2",
+        "type": "dorm",
+        "gender": "male",
+        "members": [
+            "82 || 14 || Thomas Martinez",
+            "92 || 17 || Charles Glass",
+            "81 || 14 || Patrick Fernandez",
+            "96 || 17 || Henry Denis",
+            "85 || 17 || Eric Wilkins",
+            "89 || 15 || Patrick Kelly",
+            "73 || 15 || Anthony Gray",
+            "83 || 16 || Gary Worthington"
+        ]
+    },
+    {
+        "name": "girl-dorm 0",
+        "type": "dorm",
+        "gender": "female",
+        "members": [
+            "11 || 13 || Estella Robinson",
+            "21 || 17 || Gracie Thompson",
+            "8 || 14 || Kathy Boer",
+            "15 || 17 || Hayley Trimble",
+            "14 || 17 || Elsie Conner",
+            "2 || 16 || Melinda Motto",
+            "3 || 18 || Kristen Rasch",
+            "4 || 14 || Leigh Weston"
+        ]
+    },
+    {
+        "name": "girl-dorm 1",
+        "type": "dorm",
+        "gender": "female",
+        "members": [
+            "10 || 13 || Sara Meier",
+            "1 || 18 || Amanda Sullivan",
+            "20 || 14 || Joetta Linville",
+            "22 || 18 || Katie Evans",
+            "24 || 16 || Jamie Barnes",
+            "17 || 16 || Loretta Marr",
+            "5 || 13 || Shirley Keller",
+            "6 || 13 || Francine Kendrick"
+        ]
+    },
+    {
+        "name": "girl-dorm 2",
+        "type": "dorm",
+        "gender": "female",
+        "members": [
+            "16 || 14 || Stephanie Romero",
+            "12 || 18 || Dianne Ung",
+            "7 || 13 || Sharon Gonzales",
+            "13 || 17 || Kayla Grimes",
+            "9 || 15 || Angela Palmer",
+            "19 || 15 || Courtney Boyd",
+            "23 || 15 || Ashley Lindley",
+            "18 || 15 || Elizabeth Sanchez"
+        ]
+    }
+]

@@ -21,17 +21,35 @@ def bands_view():
         band['name'] = 'Band ' + str(int(band['name'][1]) + 1)
         band['cohort'] = band['cohort']
         band['Singer'] = band['Singer'].split(' || ')
-        band['Singer'] = band['Singer'][2]
+        if len(band['Singer']) == 4:
+            band['Singer'] = band['Singer'][2]
+        else:
+            band['Singer'] = band['Singer'][1]
         band['Guitarist'] = band['Guitarist'].split(' || ')
-        band['Guitarist'] = band['Guitarist'][2]
+        if len(band['Guitarist']) == 4:
+            band['Guitarist'] = band['Guitarist'][2]
+        else:
+            band['Guitarist'] = band['Guitarist'][1]
         band['Drummer'] = band['Drummer'].split(' || ')
-        band['Drummer'] = band['Drummer'][2]
+        if len(band['Drummer']) == 4:
+            band['Drummer'] = band['Drummer'][2]
+        else:
+            band['Drummer'] = band['Drummer'][1]
         band['Bassist'] = band['Bassist'].split(' || ')
-        band['Bassist'] = band['Bassist'][2]
+        if len(band['Bassist']) == 4:
+            band['Bassist'] = band['Bassist'][2]
+        else:
+            band['Bassist'] = band['Bassist'][1]
         band['Keyboardist'] = band['Keyboardist'].split(' || ')
-        band['Keyboardist'] = band['Keyboardist'][2]
+        if len(band['Keyboardist']) == 4:
+            band['Keyboardist'] = band['Keyboardist'][2]
+        else:
+            band['Keyboardist'] = band['Keyboardist'][1]
         band['Instrumentalist'] = band['Instrumentalist'].split(' || ')
-        band['Instrumentalist'] = band['Instrumentalist'][2]
+        if len(band['Instrumentalist']) == 4:
+            band['Instrumentalist'] = band['Instrumentalist'][2]
+        else:
+            band['Instrumentalist'] = band['Instrumentalist'][1]
         bands.append(band)
 
     return render_template('bands.html', title='Bands', bands=bands)
@@ -47,12 +65,12 @@ def dorms_view():
         dorm['name'] = dorm['name'].split()
         dorm['name'] = 'Dorm ' + str(int(dorm['name'][1]) + 1)
         if dorm['gender'] == 'male':
-            dorm['gender'] == 'Male'
+            dorm['gender'] = 'Male'
         else:
-            dorm['gender'] == 'Female'
+            dorm['gender'] = 'Female'
         for i, m in enumerate(dorm['members']):
-            member = dorm['members'][i].split()
-            member = member[1] + ' ' + member[2]
+            member = dorm['members'][i].split(' || ')
+            member = member[2]
             dorm['members'][i] = member
         dorms.append(dorm)
     
