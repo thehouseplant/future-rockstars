@@ -1,4 +1,3 @@
-import datetime
 from app import app, dao
 from flask import redirect, render_template, request
 from flask_wtf import FlaskForm
@@ -20,18 +19,19 @@ def bands_view():
         band = dict(b)
         band['name'] = band['name'].split()
         band['name'] = 'Band ' + str(int(band['name'][1]) + 1)
-        band['singer'] = band['singer'].split()
-        band['singer'] = band['singer'][1] + ' ' + band['singer'][2]
-        band['guitarist'] = band['guitarist'].split()
-        band['guitarist'] = band['guitarist'][1] + ' ' + band['guitarist'][2]
-        band['drummer'] = band['drummer'].split()
-        band['drummer'] = band['drummer'][1] + ' ' + band['drummer'][2]
-        band['bassist'] = band['bassist'].split()
-        band['bassist'] = band['bassist'][1] + ' ' + band['bassist'][2]
-        band['keyboardist'] = band['keyboardist'].split()
-        band['keyboardist'] = band['keyboardist'][1] + ' ' + band['keyboardist'][2]
-        band['instrumentalist'] = band['instrumentalist'].split()
-        band['instrumentalist'] = band['instrumentalist'][1] + ' ' + band['instrumentalist'][2]
+        band['cohort'] = band['cohort']
+        band['Singer'] = band['Singer'].split(' || ')
+        band['Singer'] = band['Singer'][2]
+        band['Guitarist'] = band['Guitarist'].split(' || ')
+        band['Guitarist'] = band['Guitarist'][2]
+        band['Drummer'] = band['Drummer'].split(' || ')
+        band['Drummer'] = band['Drummer'][2]
+        band['Bassist'] = band['Bassist'].split(' || ')
+        band['Bassist'] = band['Bassist'][2]
+        band['Keyboardist'] = band['Keyboardist'].split(' || ')
+        band['Keyboardist'] = band['Keyboardist'][2]
+        band['Instrumentalist'] = band['Instrumentalist'].split(' || ')
+        band['Instrumentalist'] = band['Instrumentalist'][2]
         bands.append(band)
 
     return render_template('bands.html', title='Bands', bands=bands)
@@ -124,27 +124,14 @@ def add_member():
         "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
         "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY" 
     ]
+    
     return render_template('add-member.html', title='Add Member', states=states)
 
 
 @app.route('/members/submit', methods=['POST'])
 def submit_member():
-    '''cohort = request.form.getlist('cohort')[0]
-    today = datetime.date.today()
-    margin = datetime.timedelta(days = 30)
-    if cohort == 'first':
-        datecheck = today - margin <= datetime.date(2017, 6, 20) <= today + margin
-    elif cohort == 'second':
-        datecheck = today - margin <= datetime.date(2017, 7, 20) <= today + margin
-    elif cohort == 'third':
-        datecheck = today - margin <= datetime.date(2017, 8, 20) <= today + margin
-
-    if datecheck == True:
-        dao.insert_member(request.form)
-    elif datecheck == False:
-        print('Application cannot be submitted due to date restrictions')'''
-    
     dao.insert_member(request.form)
+    
     return redirect('/members')
 
 
