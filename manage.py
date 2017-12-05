@@ -6,7 +6,12 @@ from app import app
 
 COV = coverage.coverage(
     branch=True,
-    include='app/*',
+    include=[
+        'app/*',
+        'assign_bands.py',
+        'assign_bands2.py',
+        'assign_dorms.py'
+    ],
     omit=[
         'app/__init__.py'
     ]
@@ -14,7 +19,7 @@ COV = coverage.coverage(
 COV.start()
 
 
-app = create_app()
+manager = Manager(app)
 
 
 @manager.command
