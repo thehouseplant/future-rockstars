@@ -1,5 +1,6 @@
 import json
 import random
+import math
 
 def member_test(file):
     db = open('./data/members_test.json','r')
@@ -100,7 +101,7 @@ def type_ruler(member, gender):
 def member_result(type_member, gender, rank):
     for i in range(len(type_member)):
         if type_member[i].get('gender') == gender and type_member[i].get('trank') == rank:
-            temp_memberl = type_member[i].get('member_info')
+            temp_memberls = type_member[i].get('member_info')
             IDs = type_member[i].get('member_info').split('||')[0]
             for j in range(len(db_manage_total)):
                 if int(db_manage_total[j]['memberId']) == int(IDs):
@@ -108,7 +109,7 @@ def member_result(type_member, gender, rank):
                     break
             del type_member[i]
             break
-    return temp_memberl
+    return temp_memberls
 
 # Average
 
@@ -230,6 +231,7 @@ def semester(sem):
     db_manage = []
     db_old = []
     sem_temp = 0 
+    temp_request = []
     for i in range(len(db_manage_total)):
         semester = db_manage_total[i].get('cohort')
         if semester == 'first':
@@ -239,13 +241,27 @@ def semester(sem):
         elif semester =='third':
             semester = 3 
         if semester == sem:
-            db_manage.append(db_manage_total[i])
-            db_manage_total[i]['status'] ='Waitlisted'
+            if db_manage_total[i].get('requestedMember') == '':
+                db_manage.append(db_manage_total[i])
+            else:
+                temp_request.append(db_manage_total[i])
         elif semester < sem and db_manage_total[i].get('status') == 'Waitlisted':
             db_old.append(db_manage_total[i])
     random.shuffle(db_manage)
     if db_old != []:
         db_manage = db_old + db_manage
+    print(len(db_manage))
+    request_num = len(temp_request)
+
+    for i in range(request_num):
+        first_member = temp_request[i]
+        for j in temp_request:
+            if j['memberId'] == temp_request[i]['requestedMember']:
+                second_member = j
+        if int(first_member['memberId']) > int(second_member['memberId']):
+            pass
+        else:
+            extra_request.append({'talent':[first_member['talent'],second_member['talent']],'info':[first_member,second_member]})
     print(len(db_old))
     return db_manage
 
@@ -299,18 +315,21 @@ def talent_extra(tr,gender_ruler,nm,type,gender_list):
                 return talent_extra(tr,ruler_boy,nm,'boy',gender_list)
     return tr
 
+extra_request = []
+
 # input data into each dataset type. Change this will change the input to achieve that each semester get the different result
 db_manage = semester(semester_value)
 
 # The max number of bands
-band_amount = int(len(db_manage) / 6)
+band_amount = math.ceil(len(db_manage) / 6)
 
 all_member = getmember(db_manage)
-
+for ff in range(6):
+    print(len(all_member[ff]))
 band_gradelist = []
 
-key = ['singer', 'guitarist', 'drummer',
-       'bassist', 'keyboardist', 'instrumentalist']
+key = ['Singer', 'Guitarist', 'Drummer',
+       'Bassist', 'Keyboardist', 'Instrumentalist']
 
 
 # generate the result
@@ -449,19 +468,54 @@ for i in range(band_amount):
         else:
             band_list[i][key[ti]] = 'null, already assign all people'
 
+print(band_gradelist)
 #process the people who didn't match after normal algorithm
 ruler_boy = type_ruler(all_member, 'male')
 ruler_girl = type_ruler(all_member, 'female')
 band_nomatchlist = []
 band_nomatch_name = []
+print(extra_request)
 
+re_key= {'Singer':0, 'Guitarist':1, 'Drummer':2,
+       'Bassist':3, 'Keyboardist':4, 'Instrumentalist':5}
+band_num = 0
 for i in band_list:
+    sum = 0
     for j in key:
         if i[j] == 'matching':
+            sum +=1
             if i['name'] in band_nomatch_name:
                 pass
             else:
                 band_nomatch_name.append(i['name'])
+            for ms in range(len(extra_request)):
+                if extra_request[ms] != []:
+                
+                    m = extra_request[ms]
+                    for t in range(2):
+                        if m['talent'][t] == j:
+                            if i[m['talent'][1-t]] == 'matching':
+                                sum-=2
+                                i[j] = m['info'][t]['memberId'] + ' || ' +m['info'][t]['firstName'] + m['info'][t]['lastName'] + ' || ' + str(m['info'][t]['trank'])
+                                i[m['talent'][1-t]] =  m['info'][1-t]['memberId'] + ' || ' +m['info'][1-t]['firstName'] + m['info'][1-t]['lastName'] + ' || ' + str(m['info'][1-t]['trank'])
+                                print(band_gradelist[band_num])
+                                band_gradelist[band_num][-1]-=2
+                                if m['info'][t]['gender'] == 'male':
+                                    band_gradelist[band_num][re_key[j]] = 0
+                                    band_gradelist[band_num][re_key[m['talent'][1-t]]] = 0
+                                else:
+                                    band_gradelist[band_num][re_key[j]] = 1
+                                    band_gradelist[band_num][re_key[m['talent'][1-t]]] = 1
+                                band_gradelist[band_num][re_key[j]+7] = m['info'][t]['trank']
+                                band_gradelist[band_num][re_key[m['talent'][1-t]]+7] = m['info'][t]['trank']
+                                print(band_gradelist[band_num])
+                                extra_request[ms] = []
+                                break
+    print(band_num)
+    if sum == 0:
+        del band_nomatch_name[-1]
+        del band_gradelist[band_num] 
+    band_num +=1                   
 
 for i in band_gradelist:
     if i[-1]==0:
@@ -469,8 +523,13 @@ for i in band_gradelist:
     else:
         band_nomatchlist.append(i)
 
+print(band_nomatchlist)
+
 #After first run, deal with the people who are not match the algorism
-for i in range(len(band_nomatch_name)):
+for i in range(len(band_nomatchlist)):
+    print(i)
+    if i == 7:
+        print(all_member)
     gender_result = band_nomatchlist[i][0:6]
     talent_result = band_nomatchlist[i][7:13]
     for num in range(6):
