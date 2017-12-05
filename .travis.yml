@@ -5,10 +5,7 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 script:
-  - python tests.py
-  - python manage.py coverage
-branches:
-  only:
-    - master
+  - python manage.py tests
+  - coverage run tests.py
 after_success:
   coveralls

@@ -1,0 +1,16 @@
+[run]
+branch = True
+
+include =
+    'app/*'
+    'assign_bands.py'
+    'assign_bands2.py'
+    'assign_dorms.py'
+
+omit =
+    'app/__init__.py'
+
+[report]
+
+[html]
+directory = htmlcov
