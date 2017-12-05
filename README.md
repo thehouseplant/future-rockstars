@@ -21,7 +21,7 @@ by running the following command in Command Prompt or a terminal:
 
 Now that those are both installed, we can move on to getting the application and environment setup
 
-### Application
+### Application Setup
 
 First, we will want to clone this repository to our local machines. To do this, simply navigate to a directory that you store other projects in and run the following command in Command Prompt or a terminal: 
 
@@ -44,6 +44,13 @@ You now have all of the application code, Python environment, and application pa
   - Note: If you run into permissions issues, run the following and then retry: `sudo chmod 755 ./run.py`
 
 This will start the server and the application will be viewable at [http://localhost:5000](http://localhost:5000).
+
+Here is a complete list of commands for this application:
+- To start the application, run the command `python ./run.py`
+- To execute the test suites, run the command `python ./manage.py tests`
+- To see a code coverage report, run the command `python ./manage.py coverage`
+- To assign camp members to bands, run the command `python ./assign_bands.py`
+- To assign dorm members to bands, run the command `python ./assign_dorms.py`
 
 ## Contribution Guide
 

@@ -23,15 +23,6 @@ manager = Manager(app)
 
 
 @manager.command
-def tests():
-    tests = unittest.TestLoader().discover('./', pattern='test*.py')
-    result = unittest.TextTestRunner(verbosity=2).run(tests)
-    if result.wasSuccessful():
-        return 0
-    return 1
-
-
-@manager.command
 def coverage():
     tests = unittest.TestLoader().discover('./', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
@@ -42,6 +33,15 @@ def coverage():
         COV.report()
         COV.html_report()
         COV.erase()
+        return 0
+    return 1
+
+
+@manager.command
+def tests():
+    tests = unittest.TestLoader().discover('./', pattern='test*.py')
+    result = unittest.TextTestRunner(verbosity=2).run(tests)
+    if result.wasSuccessful():
         return 0
     return 1
 
